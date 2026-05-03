@@ -1,59 +1,160 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Béhanzin — Histoire(s) Interactive
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Une fresque historique interactive multijoueur autour de la résistance du roi Béhanzin et du royaume du Danhomè face à la colonisation française (1875 – 1906).
 
-## About Laravel
+Projet pédagogique (programmation web) — thème imposé : **histoire(s)**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Membres du binôme
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Delys Boko** — *(à compléter)*
+- **(Nom du binôme)** — *(à compléter)*
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Concept
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Le maître de jeu (un·e enseignant·e, un·e animateur·rice) crée une session et transmet un **code** à ses joueurs.
+Plusieurs joueurs rejoignent la même session avec leur pseudo. Tous lisent ensemble la même scène historique, puis **votent** chacun pour un choix proposé au roi Béhanzin. La majorité l'emporte et l'histoire avance pour tout le monde, scène après scène, jusqu'à l'une des **trois fins possibles** :
 
-## Laravel Sponsors
+- **La Résistance Éternelle** — Béhanzin se rend en roi, son nom devient mémoire vivante.
+- **L'Exil du Roi** — reddition négociée, exil en Martinique puis en Algérie.
+- **Le Sacrifice d'Abomey** — disparition mythique dans la forêt.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Une vraie bifurcation narrative existe en Acte III : selon le choix tactique des joueurs (embuscades, élimination du commandement, sabotage du ravitaillement), la scène suivante change réellement.
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Fonctionnalités
 
-## Contributing
+- Création de session par le maître de jeu (avec code personnalisé optionnel).
+- Authentification légère par pseudo (pas de mot de passe), une session = un cookie.
+- Vote multijoueur, indicateur en temps réel du nombre de votes reçus.
+- Avancement automatique de la scène quand tous les joueurs actifs ont voté.
+- **Polling AJAX** (toutes les 5 s) pour mettre à jour la page sans rechargement et rediriger automatiquement à l'avancement.
+- **Dashboard maître de jeu** sécurisé par token : voir l'état de la partie, forcer la scène suivante, désactiver un joueur, terminer la session.
+- Page de récapitulatif final avec le détail des décisions du Conseil et la fin obtenue.
+- Anti-double-vote (index unique en BDD), transaction + `lockForUpdate()` contre les races multi-joueurs.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Stack technique
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Couche | Technologie |
+|---|---|
+| Backend | **PHP 8.2** + **Laravel 12** |
+| Base de données | MySQL ou SQLite (Eloquent ORM) |
+| Frontend | **HTML5**, **CSS3** (Flexbox / Grid, BEM, variables CSS, fonts Playfair / Cinzel / Lato) |
+| JavaScript | Vanilla JS (Fetch API, manipulation DOM, JSON) |
+| Build | Vite + Tailwind 4 |
+| Sessions | Cookies HTTP (`Illuminate\Session`) |
 
-## Security Vulnerabilities
+### Notions du cours mises en œuvre
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **HTML** : structure sémantique, formulaires multiples, blade.
+- **CSS** : layouts complexes (flex / grid), variables, design responsive.
+- **JavaScript** : événements, manipulation du DOM, polling AJAX, anti-double-submit.
+- **PHP** : génération HTML (Blade), formulaires (avec validation), sessions HTTP, contrôleurs RESTful.
+- **AJAX** : route `/jeu/{code}/check/{sceneId}` retournant du JSON, mise à jour du compteur de votes en place.
+- **Multi-utilisateurs temps réel** : on voit l'avancement des autres joueurs (compteur, liste de pseudos avec indicateur "a voté"), et la scène avance pour tout le monde dès le quorum.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Architecture du code
+
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── AuthController.php       Rejoindre / Reconnexion / Déconnexion
+│   │   └── GameController.php       Scène / Vote / Polling / Résultats / Dashboard MJ
+│   └── Middleware/
+│       └── AuthPseudo.php           Protège les routes du jeu
+├── Models/
+│   ├── GameSession.php              Métier : avancement, lock, ending
+│   ├── Player.php
+│   ├── Scene.php                    Avec ending_type (resistance|exile|sacrifice)
+│   ├── Choice.php                   next_scene_id pointe vers une scène (bifurcation)
+│   └── Vote.php
+└── Providers/AppServiceProvider.php Directive Blade @auth_pseudo
+
+database/
+├── migrations/                      6 migrations (FKs ajoutées séparément à la fin)
+└── seeders/StorySeeder.php          11 scènes + bifurcation Acte III + 3 fins
+
+resources/views/
+├── layouts/app.blade.php            Layout commun (navbar, footer, flash)
+├── welcome.blade.php                Hero d'accueil
+├── auth/{join,login}.blade.php
+├── game/{scene,results}.blade.php
+└── admin/{create,dashboard}.blade.php
+
+routes/web.php                       Toutes les routes
+```
+
+---
+
+## Installation
+
+```bash
+# 1. Cloner
+git clone https://github.com/delysboko-maker/behanzin.git
+cd behanzin
+
+# 2. Dépendances
+composer install
+npm install
+
+# 3. Configuration
+cp .env.example .env
+php artisan key:generate
+
+# Editer .env si tu veux MySQL.
+# Par défaut, SQLite suffit : crée le fichier vide
+mkdir -p database && touch database/database.sqlite
+
+# 4. Migrations + seed
+php artisan migrate:fresh --seed
+
+# 5. Build frontend
+npm run build
+
+# 6. Lancer le serveur
+php artisan serve
+# → http://127.0.0.1:8000
+```
+
+---
+
+## Comment jouer
+
+1. **Créer une session** : aller sur `/admin/creer`, choisir un nom de maître de jeu et un nombre max de joueurs. Noter le **code** + le **lien MJ** (avec token) qui s'affichent.
+2. **Rejoindre** : ouvrir `/auth/rejoindre` dans plusieurs fenêtres (idéalement en navigation privée pour avoir des sessions HTTP distinctes), entrer un pseudo + le code de session.
+3. **Jouer** : lire la scène, voter, attendre les autres, voir l'histoire avancer.
+4. **Superviser (MJ)** : ouvrir le lien MJ dans un navigateur. Suivre l'état en temps réel, forcer la scène suivante si besoin.
+
+---
+
+## Sécurité / robustesse
+
+- Index unique `(player_id, game_session_id, scene_id)` → impossible de voter deux fois.
+- `Vote::create()` sous transaction, exception unique attrapée proprement.
+- `GameSession::advanceToNextScene()` sous `DB::transaction()` + `lockForUpdate()` → pas de double-avancement même en cas de votes simultanés.
+- Token MJ aléatoire (40 caractères) requis pour accéder au dashboard.
+- CSRF Laravel sur tous les formulaires.
+- Validation côté serveur sur tous les inputs.
+
+---
+
+## Choix de design
+
+- Pseudo seul (sans mot de passe) car le contexte est pédagogique (classe / groupe d'amis), pas un service public.
+- Polling toutes les 5 s plutôt que WebSockets : suffisant pour 6-10 joueurs, et beaucoup plus simple à déployer.
+- Scénario en BDD (et non en fichiers JSON statiques) pour permettre une future interface d'édition par le MJ.
+
+---
+
+## Licence
+
+Projet pédagogique. Le contenu narratif s'appuie sur des sources historiques publiques.
