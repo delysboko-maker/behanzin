@@ -8,8 +8,8 @@ Projet pédagogique (programmation web) — thème imposé : **histoire(s)**.
 
 ## Membres du binôme
 
-- **Delys Boko** — *(à compléter)*
-- **(Nom du binôme)** — *(à compléter)*
+- **Delys Boko** 
+- **Ndéye Awa Mbodji**
 
 ---
 
