@@ -112,6 +112,8 @@ php artisan key:generate
 # Editer .env si tu veux MySQL.
 # Par défaut, SQLite suffit : crée le fichier vide
 mkdir -p database && touch database/database.sqlite
+ou créer la base de donnée manuellement dans phpmyadmin 
+nommer la base de donnée : behanzin comme dans le fichier de configuration .env
 
 # 4. Migrations + seed
 php artisan migrate:fresh --seed (obligatoire pour remplire la  base de donnée )
@@ -132,8 +134,8 @@ le troisième dans Firefox
 
 Pourquoi ? 
 Sur un même compte utilisateur on n'arrive pas à connecter plusieurs utilisateurs différents sur Chrome
-Lorsque le dernier utilisateur est connecté avec son pseudo, dans un onglet donné du même navigateur, ce même pseudo c
-Nous avons donc utiliser différents navigateur pour faire le test.
+Lorsque le dernier utilisateur est connecté avec son pseudo dans un onglet, ce même pseudo continue d'être actif si on ouvre un nouvel onglet du même navigateur, ce qui empêche de simuler plusieurs joueurs côte à côte.
+Nous avons donc utilisé différents navigateurs pour faire le test.
 
 ---
 
@@ -171,3 +173,21 @@ Projet pédagogique. Le contenu narratif s'appuie sur des sources historiques pu
 
 Architecture du projet 
 Accessible sur ce lien : https://lucid.app/lucidchart/03828376-5a83-4347-9c8a-3af1a64f8124/edit?viewport_loc=-1100%2C-600%2C2601%2C1105%2C0_0&invitationId=inv_7659f843-2290-4fed-b272-d179db5c560b
+
+
+---
+
+## Tentatives d'actions bloquées par le site
+
+> *Faute de temps, nous n'avons pas pu démontrer chacun de ces points dans la vidéo, mais le site empêche bien ces tentatives. Voici cinq exemples représentatifs.*
+
+1. **Rejoindre une session pleine.** Si une session est configurée pour 6 joueurs maximum et qu'un 7e essaye de rejoindre, le serveur refuse avec le message *« La session est complète (6 joueurs max). »*. La capacité est revérifiée côté serveur, on ne peut pas la contourner depuis le navigateur.
+
+2. **Utiliser un pseudo déjà pris dans la même session.** Vérification applicative côté `AuthController::join` + index unique `(pseudo, game_session_id)` en base — impossible d'avoir deux *ganix* dans la même partie.
+
+3. **Voter deux fois sur la même scène.** Double protection :
+   - Côté JS, le bouton de soumission est désactivé après le premier clic (anti double-submit).
+   - Côté BDD, l'index unique `(player_id, game_session_id, scene_id)` rejette toute insertion en doublon, même en cas de requête forgée. 
+
+4. **Accéder au dashboard MJ avec un mauvais token.** L'URL `/admin/session/{code}/{token}` n'est valide que si le couple `code + token` correspond exactement à un enregistrement en base. Le `master_token` est aléatoire (40 caractères, `Str::random`). Avec un token erroné, l'utilisateur est redirigé vers `/admin/creer` avec le message *« Lien maître de jeu invalide. »*.
+
