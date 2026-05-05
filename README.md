@@ -25,17 +25,17 @@ Plusieurs joueurs rejoignent la même session avec leur pseudo. Tous lisent ense
 Une vraie bifurcation narrative existe en Acte III : selon le choix tactique des joueurs (embuscades, élimination du commandement, sabotage du ravitaillement), la scène suivante change réellement.
 
 ---
-
+## Framework utilisé: LARAVEL 12
 ## Fonctionnalités
 
-- Création de session par le maître de jeu (avec code personnalisé optionnel).
+- Création de session par le maître de jeu (avec code personnalisé).
 - Authentification légère par pseudo (pas de mot de passe), une session = un cookie.
 - Vote multijoueur, indicateur en temps réel du nombre de votes reçus.
 - Avancement automatique de la scène quand tous les joueurs actifs ont voté.
 - **Polling AJAX** (toutes les 5 s) pour mettre à jour la page sans rechargement et rediriger automatiquement à l'avancement.
 - **Dashboard maître de jeu** sécurisé par token : voir l'état de la partie, forcer la scène suivante, désactiver un joueur, terminer la session.
 - Page de récapitulatif final avec le détail des décisions du Conseil et la fin obtenue.
-- Anti-double-vote (index unique en BDD), transaction + `lockForUpdate()` contre les races multi-joueurs.
+- Anti-double-vote (index unique en BDD)
 
 ---
 
@@ -45,7 +45,7 @@ Une vraie bifurcation narrative existe en Acte III : selon le choix tactique des
 |---|---|
 | Backend | **PHP 8.2** + **Laravel 12** |
 | Base de données | MySQL ou SQLite (Eloquent ORM) |
-| Frontend | **HTML5**, **CSS3** (Flexbox / Grid, BEM, variables CSS, fonts Playfair / Cinzel / Lato) |
+| Frontend | **HTML5**, **CSS3** (Flexbox / Grid, BEM, variables CSS) |
 | JavaScript |(manipulation DOM, JSON) |
 | Sessions | Cookies HTTP |
 
