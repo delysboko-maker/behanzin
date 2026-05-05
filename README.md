@@ -46,9 +46,8 @@ Une vraie bifurcation narrative existe en Acte III : selon le choix tactique des
 | Backend | **PHP 8.2** + **Laravel 12** |
 | Base de données | MySQL ou SQLite (Eloquent ORM) |
 | Frontend | **HTML5**, **CSS3** (Flexbox / Grid, BEM, variables CSS, fonts Playfair / Cinzel / Lato) |
-| JavaScript | Vanilla JS (Fetch API, manipulation DOM, JSON) |
-| Build | Vite + Tailwind 4 |
-| Sessions | Cookies HTTP (`Illuminate\Session`) |
+| JavaScript |(manipulation DOM, JSON) |
+| Sessions | Cookies HTTP |
 
 ### Notions du cours mises en œuvre
 
@@ -57,7 +56,7 @@ Une vraie bifurcation narrative existe en Acte III : selon le choix tactique des
 - **JavaScript** : événements, manipulation du DOM, polling AJAX, anti-double-submit.
 - **PHP** : génération HTML (Blade), formulaires (avec validation), sessions HTTP, contrôleurs RESTful.
 - **AJAX** : route `/jeu/{code}/check/{sceneId}` retournant du JSON, mise à jour du compteur de votes en place.
-- **Multi-utilisateurs temps réel** : on voit l'avancement des autres joueurs (compteur, liste de pseudos avec indicateur "a voté"), et la scène avance pour tout le monde dès le quorum.
+- **Multi-utilisateurs temps réel** : on voit l'avancement des autres joueurs (compteur, liste de pseudos avec indicateur "a voté"), et la scène avance pour tout le monde.
 
 ---
 
@@ -115,7 +114,7 @@ php artisan key:generate
 mkdir -p database && touch database/database.sqlite
 
 # 4. Migrations + seed
-php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed (obligatoire pour remplire la  base de donnée )
 
 # 5. Build frontend
 npm run build
@@ -124,6 +123,17 @@ npm run build
 php artisan serve
 # → http://127.0.0.1:8000
 ```
+Remarque : 
+Ouvrir le lien avec différents navigateur 
+Pour une gestion optimale des sessions. 
+Exemple : Connecter le joueur 1 dans chrome 
+le second dans Safari 
+le troisième dans Firefox
+
+Pourquoi ? 
+Sur un même compte utilisateur on n'arrive pas à connecter plusieurs utilisateurs différents sur Chrome
+Lorsque le dernier utilisateur est connecté avec son pseudo, dans un onglet donné du même navigateur, ce même pseudo c
+Nous avons donc utiliser différents navigateur pour faire le test.
 
 ---
 
@@ -139,8 +149,6 @@ php artisan serve
 ## Sécurité / robustesse
 
 - Index unique `(player_id, game_session_id, scene_id)` → impossible de voter deux fois.
-- `Vote::create()` sous transaction, exception unique attrapée proprement.
-- `GameSession::advanceToNextScene()` sous `DB::transaction()` + `lockForUpdate()` → pas de double-avancement même en cas de votes simultanés.
 - Token MJ aléatoire (40 caractères) requis pour accéder au dashboard.
 - CSRF Laravel sur tous les formulaires.
 - Validation côté serveur sur tous les inputs.
@@ -149,12 +157,17 @@ php artisan serve
 
 ## Choix de design
 
-- Pseudo seul (sans mot de passe) car le contexte est pédagogique (classe / groupe d'amis), pas un service public.
-- Polling toutes les 5 s plutôt que WebSockets : suffisant pour 6-10 joueurs, et beaucoup plus simple à déployer.
-- Scénario en BDD (et non en fichiers JSON statiques) pour permettre une future interface d'édition par le MJ.
+- Pseudo seul (sans mot de passe) 
+- Polling toutes les 5 s plutôt que WebSockets
+- Scénario en BDD 
 
 ---
 
 ## Licence
 
 Projet pédagogique. Le contenu narratif s'appuie sur des sources historiques publiques.
+
+
+
+Architecture du projet 
+Accessible sur ce lien : https://lucid.app/lucidchart/03828376-5a83-4347-9c8a-3af1a64f8124/edit?viewport_loc=-1100%2C-600%2C2601%2C1105%2C0_0&invitationId=inv_7659f843-2290-4fed-b272-d179db5c560b
