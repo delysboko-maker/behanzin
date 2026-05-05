@@ -25,6 +25,10 @@ Plusieurs joueurs rejoignent la même session avec leur pseudo. Tous lisent ense
 Une vraie bifurcation narrative existe en Acte III : selon le choix tactique des joueurs (embuscades, élimination du commandement, sabotage du ravitaillement), la scène suivante change réellement.
 
 ---
+Lien github du projet : https://github.com/delysboko-maker/behanzin
+
+---
+
 ## Framework utilisé: LARAVEL 12
 ## Fonctionnalités
 
